@@ -1,0 +1,44 @@
+{
+  "template": "https://github.com/backofficedev/chartbook",
+  "commit": "520e5a552589b3b00f9940a9085ff1c8b79463b5",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "project_name": "FINM 32800 Final Project: Factor Timing",
+      "project_slug": "factor_timing",
+      "project_description": "Factor timing paper replication",
+      "author_name": "Colin Yao",
+      "author_email": "colinyao@uchicago.edu",
+      "python_version": "3.12",
+      "environment_manager": "uv",
+      "include_latex_reports": true,
+      "include_jupyter_notebooks": true,
+      "include_r_scripts": false,
+      "include_stata_scripts": false,
+      "include_chartbook": true,
+      "include_github_actions": true,
+      "include_fred": false,
+      "include_fed_yield_curve": false,
+      "include_ofr_api": false,
+      "include_bloomberg": false,
+      "include_crsp_stock": true,
+      "include_crsp_compustat": true,
+      "_chartbook_version": "0.5.1",
+      "_copy_without_render": [
+        "*.bst",
+        "*.sty",
+        "*.eps",
+        "*.ipe",
+        "*.png",
+        "*.pdf",
+        "*.tex",
+        "*.bib",
+        ".github/workflows/*.yml",
+        ".claude/skills/*/*.md"
+      ],
+      "_template": "https://github.com/backofficedev/chartbook",
+      "_commit": "520e5a552589b3b00f9940a9085ff1c8b79463b5"
+    }
+  },
+  "directory": "template"
+}
