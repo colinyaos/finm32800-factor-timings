@@ -118,6 +118,26 @@ def task_pull():
     }
 
 
+def task_pull_kozak():
+    """Pull Kozak's SCS repo and the Haddad-Kozak-Santosh Factor Timing monthly data"""
+    ft_dir = DATA_DIR / "kozak_ft_monthly"
+    return {
+        "actions": [
+            "python ./src/settings.py",
+            "python ./src/pull_kozak.py",
+        ],
+        "targets": [
+            DATA_DIR / "kozak_scs" / "README.MD",
+            DATA_DIR / "FT-17APR19-monthly.7z",
+            ft_dir / "readme.txt",
+            ft_dir / "FT-17APR19-monthly" / "ret10_size.csv",
+            ft_dir / "FT-17APR19-monthly" / "bmc10_size.csv",
+        ],
+        "file_dep": ["./src/settings.py", "./src/pull_kozak.py"],
+        "clean": [],
+    }
+
+
 def task_charts():
     """The charts chartbook.toml declares, one script each, from the data its pull made"""
     yield {
