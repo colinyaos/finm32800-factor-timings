@@ -44,6 +44,7 @@ dependencies = [
     "chartbook>=0.5.1",
     "wrds==3.2.0",
     "jaydebeapi",
+    "py7zr>=1.1.4",
 ]
 
 [tool.pytest.ini_options]
