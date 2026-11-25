@@ -1,0 +1,51 @@
+paper_order,paper_name,kozak_name,long_leg,definition,inputs,notes
+1,Size,size,low,"Market equity (price times shares outstanding) at the end of June; rebalanced annually.","crsp_monthly: prc, shrout","Doc does not give the sort direction; Kozak's totalme10_size has p10 smaller than p1 in every month, so p10 holds the small firms."
+2,Value (A),value,high,"Book equity of the previous fiscal year over December market equity; rebalanced annually each June.","comp_annual: BE items; crsp_monthly: prc, shrout","Doc does not give the sort direction; Kozak's bmc10_value has p10 above p1 in every month, so p10 holds high book-to-market."
+3,Gross profitability,prof,check,"Gross profits (revenue minus cost of goods sold) over total assets; rebalanced annually.","comp_annual: revt, cogs, at",
+4,Value-profitability,valprof,check,"Sum of the cross-sectional ranks of annual book-to-market and gross profitability; rebalanced monthly.","comp_annual: BE items, revt, cogs, at; crsp_monthly: prc, shrout",
+5,F-score,fscore,check,"Piotroski's nine-signal score of profitability, leverage, liquidity and efficiency (0 to 9); rebalanced annually.","comp_annual: ib, at, oancf, dltt, act, lct, sstk, prstkc, revt, cogs","Discrete characteristic (integers 0-9): ties leave many deciles empty; Kozak's fscore files are about 80% NaN."
+6,Debt issuance,debtiss,check,"Indicator for long-term debt issuance in the cash flow statement; updated annually.","comp_annual: dltis","Binary characteristic: fills only some deciles (Kozak's file is about 80% NaN). Ambiguity: the doc's formula is 1{DLTISS <= 0} but its text says one if debt was issued."
+7,Share repurchases,repurch,check,"Indicator for repurchases of common or preferred stock in the cash flow statement; updated annually.","comp_annual: prstkc","Binary characteristic: fills only some deciles (Kozak's file is about 80% NaN)."
+8,Net issuance (A),nissa,check,"Split-adjusted shares outstanding in June over the same a year earlier; firms with no change excluded; annual.","crsp_monthly: shrout, cfacshr","Doc calls it Share Issuance (annual)."
+9,Accruals,accruals,check,"Sloan's balance-sheet accruals (change in non-cash working capital minus depreciation) over average total assets; annual.","comp_annual: act, che, lct, dlc, txp, dp, at",
+10,Asset growth,growth,check,"Total assets over total assets a year earlier; rebalanced annually.","comp_annual: at",
+11,Asset turnover,aturnover,check,"Sales over total assets; rebalanced annually.","comp_annual: sale, at",
+12,Gross margins,gmargins,check,"Gross profits over sales; rebalanced annually.","comp_annual: revt, cogs, sale",
+13,Earnings/price,ep,check,"Income before extraordinary items over December market equity; updated annually.","comp_annual: ib; crsp_monthly: prc, shrout",
+14,Cash flows/price,cfp,check,"Income before extraordinary items plus depreciation, over December market equity; updated annually.","comp_annual: ib, dp; crsp_monthly: prc, shrout",
+15,Net operating assets,noa,check,"Operating assets minus operating liabilities, over lagged total assets; updated annually.","comp_annual: at, che, dlc, dltt, mib, pstk, ceq",
+16,Investment/assets,inv,check,"Change in gross PP&E plus change in inventories, over lagged total assets; rebalanced annually.","comp_annual: ppegt, invt, at",
+17,Investment/capital,invcap,check,"Capital expenditure over net PP&E; annual.","comp_annual: capx, ppent",
+18,Investment growth,igrowth,check,"Capital expenditure over capital expenditure a year earlier; annual.","comp_annual: capx","Doc (#19) labels this growth, the same name as Asset growth; matched to igrowth, the only file left. Its long-short return correlates 0.43 with growth's, so it is a separate sort."
+19,Sales growth,sgrowth,check,"Sales over sales a year earlier; annual.","comp_annual: sale",
+20,Leverage,lev,check,"Total assets over December market equity; annual.","comp_annual: at; crsp_monthly: prc, shrout",
+21,Return on assets (A),roaa,check,"Income before extraordinary items over total assets, annual data; updated annually.","comp_annual: ib, at",
+22,Return on book equity (A),roea,check,"Income before extraordinary items over book equity, annual data; updated annually.","comp_annual: ib, BE items",
+23,Sales/price,sp,check,"Sales over December market equity; updated annually.","comp_annual: sale; crsp_monthly: prc, shrout",
+24,Growth in LTNOA,gltnoa,check,"Change in net operating assets (scaled by assets) minus accruals; updated annually.","comp_annual: rect, invt, aco, ppent, intan, ao, ap, lco, lo, dp, at",
+25,Momentum (6m),mom,check,"Cumulative return over months t-7 to t-2 (skips the latest month); rebalanced monthly.","crsp_monthly: ret",
+26,Value-momentum,valmom,check,"Sum of the cross-sectional ranks of annual book-to-market and 6-month momentum; rebalanced monthly.","comp_annual: BE items; crsp_monthly: ret, prc, shrout",
+27,Value-momentum-profitability,valmomprof,check,"Sum of the ranks of annual book-to-market, gross profitability and momentum; rebalanced monthly.","comp_annual: BE items, revt, cogs, at; crsp_monthly: ret, prc, shrout",
+28,Short interest,shortint,check,"Shares shorted over shares outstanding; updated monthly.","short_interest: shortint; crsp_monthly: shrout",
+29,Momentum (12m),mom12,check,"Cumulative return over months t-12 to t-2; rebalanced monthly.","crsp_monthly: ret",
+30,Industry momentum,indmom,check,"Rank of the stock's Fama-French 49 industry by its value-weighted return over the past 6 months; monthly.","crsp_monthly: ret, prc, shrout, siccd; ff49",
+31,Momentum-reversals,momrev,check,"Cumulative return over months t-19 to t-14; updated monthly.","crsp_monthly: ret",
+32,Long run reversals,lrrev,check,"Cumulative return over months t-60 to t-13; updated monthly.","crsp_monthly: ret",
+33,Value (M),valuem,high,"Quarterly book equity lagged 3 months over market equity lagged 1 month; rebalanced monthly.","comp_quarterly: seqq, ceqq, pstkq, txditcq, atq, ltq, rdq; crsp_monthly: prc, shrout","Follows the doc (#34): BEQ(-3)/ME(-1), quarterly book equity. The usual Asness-Frazzini version uses annual book equity over current ME instead. Kozak's bmc10_valuem has p10 above p1 in every month (p10 = high book-to-market)."
+34,Net issuance (M),nissm,check,"Ratio of split-adjusted shares outstanding at t-13 and t-1; firms with no change excluded; monthly.","crsp_monthly: shrout, cfacshr","Doc calls it Share Issuance (monthly). Ambiguity: the doc writes shrout(t-13)/shrout(t-1), the inverse of the annual nissa ratio."
+35,Earnings surprises,sue,check,"Change in quarterly earnings from four quarters ago over its standard deviation in the prior two years; monthly.","comp_quarterly: ibq, rdq","Doc calls it PEAD (SUE)."
+36,Return on book equity (Q),roe,check,"Quarterly income before extraordinary items over book equity three months earlier; rebalanced monthly.","comp_quarterly: ibq, seqq, ceqq, pstkq, txditcq, rdq",
+37,Return on market equity,rome,check,"Quarterly income before extraordinary items over market equity four months earlier; rebalanced monthly.","comp_quarterly: ibq, rdq; crsp_monthly: prc, shrout",
+38,Return on assets (Q),roa,check,"Quarterly income before extraordinary items over total assets three months earlier; updated quarterly.","comp_quarterly: ibq, atq, rdq",
+39,Short-term reversals,strev,check,"Return in the previous month; updated monthly.","crsp_monthly: ret",
+40,Idiosyncratic volatility,ivol,check,"Volatility of residuals from a 3-month regression of daily returns on the Fama-French 3 factors; lagged one month.","crsp_daily: ret; ff_daily: mktrf, smb, hml, rf",
+41,Beta arbitrage,betaarb,check,"Beta on the CRSP equal-weighted index from up to 60 months of daily data (minimum 36); lagged one month.","crsp_daily: ret; crsp_daily_index: ewretd","Doc names it beta; the file is betaarb."
+42,Seasonality,season,check,"Average return in the same calendar month over the past 5 years (at least 1 year needed); monthly.","crsp_monthly: ret",
+43,Industry rel. reversals,indrrev,check,"Last month's return minus last month's return of the stock's Fama-French 49 industry; monthly.","crsp_monthly: ret, prc, shrout, siccd; ff49",
+44,Industry rel. reversals (L.V.),indrrevlv,check,"Industry relative reversal, using only stocks with idiosyncratic volatility below the NYSE median; monthly.","crsp_monthly: ret, prc, shrout, siccd, exchcd; crsp_daily: ret; ff_daily: mktrf, smb, hml, rf; ff49",
+45,Industry momentum-reversals,indmomrev,check,"Sum of the ranks on industry momentum and on low-volatility industry relative reversals; rebalanced monthly.","crsp_monthly: ret, prc, shrout, siccd, exchcd; crsp_daily: ret; ff_daily: mktrf, smb, hml, rf; ff49","Ambiguity: the doc's formula combines industry momentum with the low-vol relative reversal, and it does not say whether the ranks are of industries or of stocks."
+46,Composite issuance,ciss,check,"Log growth in market equity from t-60 to t-13 minus the cumulative log return over the same window; monthly.","crsp_monthly: ret, prc, shrout",
+47,Price,price,check,"Log of the share price; updated monthly.","crsp_monthly: prc",
+48,Share volume,shvol,check,"Average monthly trading volume over the past 3 months over shares outstanding; updated monthly.","crsp_monthly: vol, shrout",
+49,Duration,dur,check,"Cash flow duration: present-value-weighted timing of forecast cash flows (AR(1) ROE and book growth) over price; monthly.","comp_annual: ib, BE items; crsp_monthly: prc, shrout","Ambiguity: the doc's citation is missing ('Follows ?') and the forecasting method (horizon, discount rate) is only sketched."
+50,Firm age,age,check,"Log of one plus the number of months since the firm's first appearance in CRSP; monthly.","crsp_monthly: permno, date","Discrete-valued and coarse early in the sample: Kozak's age deciles are fully populated only from 1993-12."
