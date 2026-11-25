@@ -15,19 +15,7 @@ build = "doit"
 [notebooks]
 
 
-[notebooks.01_example_notebook_interactive]
-name = "Example Notebook Interactive"
-description = "Example notebook for demonstrating how to construct a Chartbook notebook."
-path = "_output/01_example_notebook_interactive.ipynb"
-
-
-
-
 [dataframes]
-
-
-
-
 
 
 [dataframes.crsp_index]
@@ -47,7 +35,6 @@ docs = """
 """
 
 
-
 [dataframes.fama_french_factors]
 name = "Fama-French Factors"
 description = "The monthly Fama-French factors: the market, size and value, and the risk-free rate."
@@ -65,40 +52,4 @@ beside it. Returns are decimals: 0.01 is one percent. WRDS's terms apply to shar
 """
 
 
-
 [charts]
-
-
-
-
-
-
-[charts.crsp_value_weighted]
-name = "Growth of $1 in the CRSP Value-Weighted Index"
-description = "A dollar invested in the CRSP value-weighted index, dividends reinvested"
-dataframe = "crsp_index"
-tags = ["Equities", "Returns"]
-frequency = "Monthly"
-units = "Dollars"
-observation_period = "Month"
-release_lag = "Months"
-release_timing = "On WRDS's update schedule"
-path = "./_output/crsp_value_weighted.html"
-docs = "Made by `src/chart_crsp_stock.py`, compounding `vwretd` from the first month pulled."
-
-
-
-[charts.fama_french_factors]
-name = "Growth of $1 in the Fama-French Factors"
-description = "A dollar in each of the market, size and value factors, compounded monthly"
-dataframe = "fama_french_factors"
-tags = ["Equities", "Factors"]
-frequency = "Monthly"
-units = "Dollars"
-observation_period = "Month"
-release_lag = "Months"
-release_timing = "On WRDS's update schedule"
-path = "./_output/fama_french_factors.html"
-docs = "Made by `src/chart_crsp_compustat.py`. The factors are long-short returns, so a dollar in each is a dollar of exposure."
-
-

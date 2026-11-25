@@ -24,20 +24,22 @@ jobs:
         key: ${{ runner.os }}-venv-${{ steps.python.outputs.python-version }}-${{ hashFiles('**/requirements.txt', '**/pyproject.toml', '**/uv.lock', '**/.python-version') }}
         restore-keys: |
           ${{ runner.os }}-venv-${{ steps.python.outputs.python-version }}-
-    # A project made for uv has a pyproject.toml; the others have a requirements.txt.
+    # uv.lock is the source of truth: install from it with uv sync whenever it
+    # exists. requirements.txt (exported from uv.lock for pip users) is the
+    # fallback only for a project without a lockfile.
     # uv uses the Python set up above and downloads none, so a mismatch fails here
     - name: Install Python environment
       if: steps.cache-python-env.outputs.cache-hit != 'true'
       env:
         UV_PYTHON_DOWNLOADS: never
       run: |
-        if [ -f requirements.txt ]; then
+        if [ -f uv.lock ]; then
+          pip install uv
+          uv sync --locked --python "${{ steps.python.outputs.python-path }}"
+        else
           python -m venv .venv
           source .venv/bin/activate
           pip install -r requirements.txt
-        else
-          pip install uv
-          uv sync --python "${{ steps.python.outputs.python-path }}"
         fi
     - name: Test with pytest
       run: |

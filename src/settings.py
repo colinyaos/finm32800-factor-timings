@@ -169,8 +169,24 @@ else:
 START_DATE = datetime.strptime("1913-01-01", "%Y-%m-%d")
 END_DATE = datetime.strptime("2026-10-31", "%Y-%m-%d")
 
+# The replication sample of Haddad, Kozak and Santosh (2020), committed for
+# the same reason as the window above.
+# First month of the paper's sample.
+REPLICATION_START = datetime.strptime("1974-01-01", "%Y-%m-%d")
+# Last month of the paper's sample.
+REPLICATION_END = datetime.strptime("2017-12-31", "%Y-%m-%d")
+# First out-of-sample month: 1974-01 to 1995-12 is used for estimation,
+# SPLIT_DATE through REPLICATION_END is the out-of-sample half.
+SPLIT_DATE = datetime.strptime("1996-01-01", "%Y-%m-%d")
+
 # Names config() refuses: they are the constants above, not variables.
-COMMITTED = ("START_DATE", "END_DATE")
+COMMITTED = (
+    "START_DATE",
+    "END_DATE",
+    "REPLICATION_START",
+    "REPLICATION_END",
+    "SPLIT_DATE",
+)
 
 
 ## File paths
