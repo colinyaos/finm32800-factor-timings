@@ -138,101 +138,6 @@ def task_pull_kozak():
     }
 
 
-def task_charts():
-    """The charts chartbook.toml declares, one script each, from the data its pull made"""
-    yield {
-        "name": "crsp_value_weighted",
-        "actions": ["python ./src/chart_crsp_stock.py"],
-        "file_dep": ["./src/chart_crsp_stock.py", DATA_DIR / "CRSP_MSIX.parquet"],
-        "targets": [OUTPUT_DIR / "crsp_value_weighted.html", OUTPUT_DIR / "crsp_value_weighted.png"],
-        "clean": True,
-    }
-    yield {
-        "name": "fama_french_factors",
-        "actions": ["python ./src/chart_crsp_compustat.py"],
-        "file_dep": ["./src/chart_crsp_compustat.py", DATA_DIR / "FF_FACTORS.parquet"],
-        "targets": [OUTPUT_DIR / "fama_french_factors.html", OUTPUT_DIR / "fama_french_factors.png"],
-        "clean": True,
-    }
-
-
-def task_summary_stats():
-    """Generate summary statistics tables"""
-    file_dep = ["./src/example_table.py"]
-    file_output = [
-        "example_table.tex",
-        "pandas_to_latex_simple_table1.tex",
-    ]
-    targets = [OUTPUT_DIR / file for file in file_output]
-
-    return {
-        "actions": [
-            "python ./src/example_table.py",
-            "python ./src/pandas_to_latex_demo.py",
-        ],
-        "targets": targets,
-        "file_dep": file_dep,
-        "clean": True,
-    }
-
-
-def task_example_plot():
-    """Example plots"""
-    file_dep = [Path("./src") / file for file in ["example_plot.py"]]
-    file_output = ["example_plot.png"]
-    targets = [OUTPUT_DIR / file for file in file_output]
-
-    return {
-        "actions": [
-            "python ./src/example_plot.py",
-        ],
-        "targets": targets,
-        "file_dep": file_dep,
-        "clean": True,
-    }
-
-
-notebook_tasks = {
-    "01_example_notebook_interactive.ipynb.py": {
-        "path": "./src/01_example_notebook_interactive.ipynb.py",
-        "file_dep": [],
-        "targets": [],
-    },
-}
-
-
-# fmt: off
-def task_run_notebooks():
-    """Preps the notebooks for presentation format.
-    Execute notebooks if the script version of it has been changed.
-    """
-    for notebook in notebook_tasks.keys():
-        pyfile_path = Path(notebook_tasks[notebook]["path"])
-        notebook_path = pyfile_path.with_suffix("")  # strips .py, leaves .ipynb
-        notebook_name = notebook_path.stem  # e.g. "01_example_notebook_interactive"
-        yield {
-            "name": notebook,
-            "actions": [
-                """python -c "import sys; from datetime import datetime; print(f'Start """ + notebook + """: {datetime.now()}', file=sys.stderr)" """,
-                f'jupytext --to notebook --output "{notebook_path}" "{pyfile_path}"',
-                jupyter_execute_notebook(notebook_path),
-                jupyter_to_html(notebook_path),
-                mv(notebook_path, OUTPUT_DIR),
-                """python -c "import sys; from datetime import datetime; print(f'End """ + notebook + """: {datetime.now()}', file=sys.stderr)" """,
-            ],
-            "file_dep": [
-                pyfile_path,
-                *notebook_tasks[notebook]["file_dep"],
-            ],
-            "targets": [
-                OUTPUT_DIR / f"{notebook_name}.ipynb",
-                OUTPUT_DIR / f"{notebook_name}.html",
-                *notebook_tasks[notebook]["targets"],
-            ],
-            "clean": True,
-        }
-# fmt: on
-
 ###############################################################
 ## Task below is for LaTeX compilation
 ###############################################################
@@ -241,25 +146,12 @@ def task_run_notebooks():
 def task_compile_latex_docs():
     """Compile the LaTeX documents to PDFs"""
     file_dep = [
-        "./reports/report_example.tex",
+        "./reports/report.tex",
         "./reports/my_article_header.sty",
-        "./reports/slides_example.tex",
-        "./reports/my_beamer_header.sty",
         "./reports/my_common_header.sty",
-        "./reports/report_simple_example.tex",
-        "./reports/slides_simple_example.tex",
-        # Generated inputs. The reports typeset a placeholder for a missing one
-        # instead of failing, so list them here to have doit build them first.
-        OUTPUT_DIR / "example_plot.png",
-        OUTPUT_DIR / "example_table.tex",
-        OUTPUT_DIR / "pandas_to_latex_simple_table1.tex",
+        "./reports/bibliography.bib",
     ]
-    targets = [
-        "./reports/report_example.pdf",
-        "./reports/slides_example.pdf",
-        "./reports/report_simple_example.pdf",
-        "./reports/slides_simple_example.pdf",
-    ]
+    targets = ["./reports/report.pdf"]
 
     if shutil.which("latexmk") is None:
         # Without TeX, the rest of the project still builds
@@ -278,16 +170,8 @@ def task_compile_latex_docs():
 
     return {
         "actions": [
-            # My custom LaTeX templates
-            "latexmk -xelatex -halt-on-error -cd ./reports/report_example.tex",  # Compile
-            "latexmk -xelatex -halt-on-error -c -cd ./reports/report_example.tex",  # Clean
-            "latexmk -xelatex -halt-on-error -cd ./reports/slides_example.tex",  # Compile
-            "latexmk -xelatex -halt-on-error -c -cd ./reports/slides_example.tex",  # Clean
-            # Simple templates based on small adjustments to Overleaf templates
-            "latexmk -xelatex -halt-on-error -cd ./reports/report_simple_example.tex",  # Compile
-            "latexmk -xelatex -halt-on-error -c -cd ./reports/report_simple_example.tex",  # Clean
-            "latexmk -xelatex -halt-on-error -cd ./reports/slides_simple_example.tex",  # Compile
-            "latexmk -xelatex -halt-on-error -c -cd ./reports/slides_simple_example.tex",  # Clean
+            "latexmk -xelatex -halt-on-error -cd ./reports/report.tex",  # Compile
+            "latexmk -xelatex -halt-on-error -c -cd ./reports/report.tex",  # Clean
         ],
         "targets": targets,
         "file_dep": file_dep,
